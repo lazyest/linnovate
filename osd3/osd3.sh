@@ -13,7 +13,7 @@ if [ -z $user ]; then
     echo "ERROR: Need paramter 'user'"
     exit 1
 fi
-ip=$3
+ip=$4
 if [ -z $ip ]; then
     echo "ERROR: Need paramter 'ip'"
     exit 1
