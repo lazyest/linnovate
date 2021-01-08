@@ -2,6 +2,26 @@
 
 echo $@ > /root/parameters.log
 
+#common part for all machines
+
+#uncomment beforerelease
+
+#yum -y update --exclude=WALinuxAgent
+
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+
+yum install -y yum-utils device-mapper-persistent-data lvm2
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum install -y  docker-ce docker-ce-cli containerd.io
+
+yum -y install centos-release-openshift-origin311 epel-release docker git pyOpenSSL
+yum -y install origin-clients
+
+systemctl start docker
+systemctl enable docker
+
+
 case $1 in
 
 1)
@@ -24,15 +44,12 @@ echo "Ip='$ip'"
 home=/home/$user
 owner_group=`grep "^$user" /etc/passwd | cut -d':' -f4`
 
-#uncomment beforerelease
-#yum -y update --exclude=WALinuxAgent
+#yum install -y yum-utils device-mapper-persistent-data lvm2
+#yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+#yum install -y  docker-ce docker-ce-cli containerd.io
 
-yum install -y yum-utils device-mapper-persistent-data lvm2
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum install -y  docker-ce docker-ce-cli containerd.io
-
-systemctl start docker
-systemctl enable docker
+#systemctl start docker
+#systemctl enable docker
 
 mkdir /etc/docker /etc/containers
 
@@ -69,9 +86,6 @@ usermod -aG docker $user
 #echo "PATH=\$PATH:/usr/local/bin" >> /etc/profile
 #cd $home
 
-yum -y install centos-release-openshift-origin311
-yum -y install origin-clients
-
 systemctl restart docker
 
 echo "Running cluster"
@@ -79,7 +93,9 @@ echo "Running cluster"
 cat > $home/run_cluster_during_install.sh <<EOF
 #!/bin/bash
 newgrp docker << END
+
 export ip=$ip
+
 oc cluster up --public-hostname=$ip --routing-suffix=$ip.xip.io
 END
 EOF
@@ -93,21 +109,13 @@ su -c "bash -xv run_cluster_during_install.sh" - $user
 2)
 
 echo "second node" > /root/status.log
-#yum -y update
-yum -y install centos-release-openshift-origin311 epel-release docker git pyOpenSSL
-
-systemctl start docker
-systemctl enable docker
 
 ;;
 
 3)
 
 echo "third node" > /root/status.log
-#yum -y update
-yum -y install centos-release-openshift-origin311 epel-release docker git pyOpenSSL
-systemctl start docker
-systemctl enable docker
+
 
 ;;
 
