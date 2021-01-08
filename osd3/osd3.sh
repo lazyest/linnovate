@@ -15,7 +15,7 @@ yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum install -y  docker-ce docker-ce-cli containerd.io
 
-yum -y install centos-release-openshift-origin311 epel-release docker git pyOpenSSL
+yum -y install centos-release-openshift-origin311 epel-release git pyOpenSSL
 yum -y install origin-clients
 
 systemctl start docker
