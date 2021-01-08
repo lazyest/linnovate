@@ -24,7 +24,9 @@ echo "Ip='$ip'"
 home=/home/$user
 owner_group=`grep "^$user" /etc/passwd | cut -d':' -f4`
 
-yum -y update --exclude=WALinuxAgent
+#uncomment beforerelease
+#yum -y update --exclude=WALinuxAgent
+
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum install -y  docker-ce docker-ce-cli containerd.io
@@ -58,14 +60,18 @@ docker_group=`grep docker /etc/group | cut -d':' -f 3`
 
 usermod -aG docker $user
 
-cd $home
-wget https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+#cd $home
+#wget https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
 
-tar xvf openshift-origin-client-tools*.tar.gz
-cd openshift-origin-client-tools*
-mv  oc kubectl  /usr/local/bin/
-echo "PATH=\$PATH:/usr/local/bin" >> /etc/profile
-cd $home
+#tar xvf openshift-origin-client-tools*.tar.gz
+#cd openshift-origin-client-tools*
+#mv  oc kubectl  /usr/local/bin/
+#echo "PATH=\$PATH:/usr/local/bin" >> /etc/profile
+#cd $home
+
+yum -y install centos-release-openshift-origin311
+yum -y install origin-clients
+
 systemctl restart docker
 
 echo "Running cluster"
@@ -87,12 +93,21 @@ su -c "bash -xv run_cluster_during_install.sh" - $user
 2)
 
 echo "second node" > /root/status.log
+#yum -y update
+yum -y install centos-release-openshift-origin311 epel-release docker git pyOpenSSL
+
+systemctl start docker
+systemctl enable docker
 
 ;;
 
 3)
 
 echo "third node" > /root/status.log
+#yum -y update
+yum -y install centos-release-openshift-origin311 epel-release docker git pyOpenSSL
+systemctl start docker
+systemctl enable docker
 
 ;;
 
