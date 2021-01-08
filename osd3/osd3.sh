@@ -8,12 +8,12 @@ case $1 in
 
 echo "main node" > /root/status.log
 
-user=$1
+user=$2
 if [ -z $user ]; then
     echo "ERROR: Need paramter 'user'"
     exit 1
 fi
-ip=$2
+ip=$3
 if [ -z $ip ]; then
     echo "ERROR: Need paramter 'ip'"
     exit 1
