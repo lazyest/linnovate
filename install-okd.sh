@@ -22,8 +22,8 @@ yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce
 yum install -y  docker-ce docker-ce-cli containerd.io
 
 yum-config-manager --enable https://github.com/CentOS-PaaS-SIG/centos-release-openshift-origin/blob/master/CentOS-OpenShift-Origin.repo
-yum install -i centos-release-openshift-origin311
-yum install origin-clients
+yum install -y centos-release-openshift-origin311
+yum install -y origin-clients
 
 systemctl start docker
 systemctl enable docker
