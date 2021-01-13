@@ -21,9 +21,11 @@ yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum install -y  docker-ce docker-ce-cli containerd.io
 
-yum-config-manager --enable https://github.com/CentOS-PaaS-SIG/centos-release-openshift-origin/blob/master/CentOS-OpenShift-Origin.repo
-yum install -y centos-release-openshift-origin311
-yum install -y origin-clients
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+
+yum -y install centos-release-openshift-origin311 epel-release git pyOpenSSL
+yum -y install origin-clients
 
 systemctl start docker
 systemctl enable docker
@@ -53,14 +55,6 @@ owner_group=`grep "^$user" /etc/passwd | cut -d':' -f4`
 docker_group=`grep docker /etc/group | cut -d':' -f 3`
 
 usermod -aG docker $user
-
-cd $home
-#wget https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
-
-#tar xvf openshift-origin-client-tools*.tar.gz
-#cd openshift-origin-client-tools*
-#mv  oc kubectl  /usr/local/bin/
-#echo "PATH=\$PATH:/usr/local/bin" >> /etc/profile
 
 cd $home
 systemctl restart docker
