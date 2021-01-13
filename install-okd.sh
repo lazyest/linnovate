@@ -71,12 +71,15 @@ EOF
 
 cd $home
 chown $owner_group:$docker_group run_cluster_during_install.sh
+
+#initial run 
 su -c "bash -xv run_cluster_during_install.sh" - $user
 
+#restarting for config changes
 su -c "oc cluster down" - $user
-
 sed -i -e "s|https://127.0.0.1|https://$ip|" /home/$user/openshift.local.clusterup/openshift-controller-manager/openshift-master.kubeconfig
 
+#actual run
 su -c "bash -xv run_cluster_during_install.sh" - $user
 
 echo "****************** END ******************"
