@@ -33,14 +33,13 @@ echo "$ssh_rsa_pub" > $home/.ssh/authorized_keys
 chown -R $owner $home/.ssh
 chmod  600 $home/.ssh/*
 
-
 echo $@ > /root/parameters.log
 
 #common part for all machines
 
 #uncomment beforerelease
 
-#yum -y update --exclude=WALinuxAgent
+yum -y update --exclude=WALinuxAgent
 
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
@@ -76,17 +75,21 @@ echo "$ssh_rsa" > $home/.ssh/id_rsa
 chown -R $owner $home/.ssh
 chmod -R 600 $home/.ssh/*
 
+echo "SSH keys done into $home" >> /root/status.log
+
+
 #create hosts records
 hostnamectl set-hostname  master.$4.nip.io
-
-yum -y upgrade
 
 rpm -Uvh https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.7.10-1.el7.ans.noarch.rpm
 #ansible --version
 
+cd $home
 git clone https://github.com/openshift/openshift-ansible.git
 cd openshift-ansible && git fetch && git checkout release-3.11
-cd ..
+
+echo "Git done" >> /root/status.log
+cd $home
 
 cat <<EOT >hosts.ini
 
@@ -128,22 +131,28 @@ ${10}  openshift_node_group_name='node-config-infra'
 
 EOT
 
+echo "ansible books done done" >> /root/status.log
+
 #ansible-playbook -i hosts.ini playbooks/prerequisites.yml
 #ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml
 
 ;;
 
+echo "all done" >> /root/status.log
+
 2)
 
 echo "second node" > /root/status.log
-hostnamectl set-hostname  master.$7.nip.io
+hostnamectl set-hostname  compute.$7.nip.io
+echo "all done" >> /root/status.log
 
 ;;
 
 3)
 
 echo "third node" > /root/status.log
-hostnamectl set-hostname  master.${10}.nip.io
+hostnamectl set-hostname  infra.${10}.nip.io
+echo "all done" >> /root/status.log
 
 ;;
 
