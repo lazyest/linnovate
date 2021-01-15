@@ -80,6 +80,8 @@ yum -y install origin-clients
 systemctl start docker
 systemctl enable docker
 
+sysctl -w net.ipv4.ip_forward=1
+
 echo $4 master.$4.nip.io >> /etc/hosts
 echo $7 compute.$7.nip.io >> /etc/hosts
 echo ${10} infra.${10}.nip.io >> /etc/hosts
