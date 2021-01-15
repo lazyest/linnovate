@@ -39,14 +39,20 @@ echo $@ > /root/parameters.log
 
 #uncomment beforerelease
 
+echo "system upgrade" > /root/status.log
+
 yum -y update --exclude=WALinuxAgent
 
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
+echo "Docker install" >> /root/status.log
+
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 yum install -y  docker-ce docker-ce-cli containerd.io
+
+echo "openshift install" >> /root/status.log
 
 yum -y install centos-release-openshift-origin311 epel-release git pyOpenSSL
 yum -y install origin-clients
@@ -65,11 +71,14 @@ search nip.io
 nameserver 8.8.8.8
 EOT
 
+echo "Case selection begin" >> /root/status.log
+
+
 case $1 in
 
 1)
 
-echo "main node" > /root/status.log
+echo "main node" >> /root/status.log
 
 echo "$ssh_rsa" > $home/.ssh/id_rsa
 chown -R $owner $home/.ssh
@@ -142,7 +151,7 @@ echo "all done" >> /root/status.log
 
 2)
 
-echo "second node" > /root/status.log
+echo "second node" >> /root/status.log
 hostnamectl set-hostname  compute.$7.nip.io
 echo "all done" >> /root/status.log
 
@@ -150,7 +159,7 @@ echo "all done" >> /root/status.log
 
 3)
 
-echo "third node" > /root/status.log
+echo "third node" >> /root/status.log
 hostnamectl set-hostname  infra.${10}.nip.io
 echo "all done" >> /root/status.log
 
