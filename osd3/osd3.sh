@@ -80,7 +80,11 @@ yum -y install origin-clients
 systemctl start docker
 systemctl enable docker
 
+# preparing network subsystems
+sed -i 's/PEERDNS=yes/PEERDNS=no/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 sysctl -w net.ipv4.ip_forward=1
+systemctl restart NetworkManager
+service network restart
 
 echo $4 master.$4.nip.io >> /etc/hosts
 echo $7 compute.$7.nip.io >> /etc/hosts
