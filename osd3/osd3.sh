@@ -62,12 +62,11 @@ yum -y update --exclude=WALinuxAgent
 echo "misc install" >> /root/status.log
 
 yum install -y wget git zile net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct openssl-devel httpd-tools python-cryptography python2-pip python-devel python-passlib java-1.8.0-openjdk-headless "@Development Tools"
-yum update -y
 
 
 echo "docker install" >> /root/status.log
 
-yum install docker-1.13.1
+yum install -y docker-1.13.1
 systemctl start docker && systemctl enable docker && systemctl status docker
 
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
