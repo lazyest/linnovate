@@ -166,6 +166,9 @@ EOT
 
 echo "ansible books done done" >> /root/status.log
 
+echo "waiting 2 min for other nodes" >> /root/status.log
+sleep 2m
+
 #ansible-playbook -i hosts.ini playbooks/prerequisites.yml
 echo "ansible (no) prereq done" >> /root/status.log
 
