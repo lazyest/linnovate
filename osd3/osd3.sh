@@ -82,8 +82,8 @@ systemctl enable docker
 
 # preparing network subsystems
 echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
-sed -i 's/PEERDNS=yes/PEERDNS=no/g' /etc/sysconfig/network-scripts/ifcfg-eth0
-sed -i 's/PEERDNS=NM_CONTROLLED=no/NM_CONTROLLED=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+#sed -i 's/PEERDNS=yes/PEERDNS=no/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i 's/NM_CONTROLLED=no/NM_CONTROLLED=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 
 sysctl -w net.ipv4.ip_forward=1
 systemctl restart NetworkManager
