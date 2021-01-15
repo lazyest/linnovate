@@ -29,6 +29,8 @@ x8bswqHNdQF5Jy+Bt4QCfrVFaxnqsZgY2z3Dr7dtFo3aKy5N1zcs
 "
 ssh_rsa_pub="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBAcK82Xtg0pMnLacGyHnZFQbnER7HSPMS7++hT3Z4DJVsApCN/1QHkzwHFSe/VqOYJtRx9pN3Por3PjeOU/skb76p0AEsfj+qfA1rdlcVkh9AmNpVYk2KpSUfN4B5dnHSjRBeHNmuvYTbpid9NHPdt/JM9srlFXk66p9ljg19iAca7uEbAn6y9j46xYUCWzJI6Deai+x/ecpdpH3FiJ6AQhrE1jiOT8bMm9lcpjeaEZbGPGmHQYBt7Z9quSa57JL+NUgURY9PitbsdRxqqvxDbjSdxXzFu9UUOzet7aqcEEyDOADTtj8Ot/v5WpvZchGQSfAt1NCCeuvk6h3ISuhx"
 
+mkdir $home/.ssh
+
 echo "$ssh_rsa_pub" > $home/.ssh/authorized_keys
 chown -R $owner $home/.ssh
 chmod  600 $home/.ssh/*
