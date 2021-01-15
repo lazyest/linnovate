@@ -110,7 +110,7 @@ echo "SSH pub done into $home" >> /root/status.log
 #create hosts records
 hostnamectl set-hostname  master.$4.nip.io
 
-rpm -Uvh https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.7.10-1.el7.ans.noarch.rpm
+yum install -y ansible
 #ansible --version
 
 cd $home
@@ -118,7 +118,6 @@ git clone https://github.com/openshift/openshift-ansible.git
 cd openshift-ansible && git fetch && git checkout release-3.11
 
 echo "Git done" >> /root/status.log
-cd $home
 
 cat <<EOT >hosts.ini
 
