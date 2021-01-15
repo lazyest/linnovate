@@ -81,6 +81,7 @@ systemctl start docker
 systemctl enable docker
 
 # preparing network subsystems
+echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
 sed -i 's/PEERDNS=yes/PEERDNS=no/g' /etc/sysconfig/network-scripts/ifcfg-eth0
 sysctl -w net.ipv4.ip_forward=1
 systemctl restart NetworkManager
@@ -90,7 +91,6 @@ echo $4 master.$4.nip.io >> /etc/hosts
 echo $7 compute.$7.nip.io >> /etc/hosts
 echo ${10} infra.${10}.nip.io >> /etc/hosts
 
-echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
 
 cat <<EOT >/etc/resolv.conf
 search nip.io
@@ -122,7 +122,6 @@ echo "SSH keys done into $home" >> /root/status.log
 hostnamectl set-hostname  master.$4.nip.io
 
 yum install -y ansible
-#ansible --version
 
 cd $home
 git clone https://github.com/openshift/openshift-ansible.git
@@ -172,13 +171,13 @@ EOT
 
 echo "ansible books done done" >> /root/status.log
 
-echo "waiting 2 min for other nodes" >> /root/status.log
-sleep 2m
+echo "waiting 5 min for other nodes" >> /root/status.log
+sleep 5m
 
-#ansible-playbook -i hosts.ini playbooks/prerequisites.yml
+ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /root/ansible-deploy.log
 echo "ansible (no) prereq done" >> /root/status.log
 
-#ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml
+ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /root/ansible-deploy.log
 echo "ansible (no) deploy done" >> /root/status.log
 
 echo "calling home" >> /root/status.log
