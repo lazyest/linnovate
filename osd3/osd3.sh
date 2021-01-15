@@ -1,6 +1,9 @@
 #!/bin/bash
 
 user=$2
+home=$(grep "^$user:" /etc/passwd | awk -F: '{print $6}')
+owner=$(grep "^$user:" /etc/passwd | grep "^$user:" /etc/passwd | awk -F: '{print $3,":",$4}' | sed 's/ //g')
+
 
 ssh_rsa="-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAwQHCvNl7YNKTJy2nBsh52RUG5xEex0jzEu/voU92eAyVbAKQ
