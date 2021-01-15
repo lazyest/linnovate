@@ -50,12 +50,6 @@ echo "adding pub key info" > /root/status.log
 
 owner_group=`cat /etc/passwd| grep $user | cut -d':' -f5`
 
-mkdir $home/.ssh
-
-echo "$ssh_rsa_pub" >> $home/.ssh/authorized_keys
-chown -R $user:$owner_group $home/.ssh
-chmod  600 $home/.ssh/*
-
 echo $@ > /root/parameters.log
 
 #common part for all machines
@@ -93,6 +87,8 @@ search nip.io
 nameserver 8.8.8.8
 EOT
 
+mkdir $home/.ssh
+
 echo "$ssh_rsa_pub" >> $home/.ssh/authorized_keys
 chown -R $user:$owner_group $home/.ssh
 chmod 600 $home/.ssh/*
@@ -107,7 +103,7 @@ case $1 in
 echo "main node" >> /root/status.log
 
 echo "$ssh_rsa" >> $home/.ssh/id_rsa
-chown -R $owner:$owner_group $home/.ssh
+chown -R $user:$owner_group $home/.ssh
 chmod -R 600 $home/.ssh/*
 
 echo "SSH keys done into $home" >> /root/status.log
