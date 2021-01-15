@@ -59,14 +59,19 @@ echo "system upgrade" > /root/status.log
 
 yum -y update --exclude=WALinuxAgent
 
+echo "misc install" >> /root/status.log
+
+yum install -y wget git zile net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct openssl-devel httpd-tools python-cryptography python2-pip python-devel python-passlib java-1.8.0-openjdk-headless "@Development Tools"
+yum update -y
+
+
+echo "docker install" >> /root/status.log
+
+yum install docker-1.13.1
+systemctl start docker && systemctl enable docker && systemctl status docker
+
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
-
-echo "Docker install" >> /root/status.log
-
-yum install -y yum-utils device-mapper-persistent-data lvm2
-yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-yum install -y  docker-ce docker-ce-cli containerd.io
 
 echo "openshift install" >> /root/status.log
 
@@ -163,10 +168,12 @@ EOT
 echo "ansible books done done" >> /root/status.log
 
 #ansible-playbook -i hosts.ini playbooks/prerequisites.yml
+echo "ansible (no) prereq done" >> /root/status.log
+
 #ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml
+echo "ansible (no) deploy done" >> /root/status.log
 
 echo "calling home" >> /root/status.log
-
 curl -k -XPOST https://vhd.linnovate.net/service?sw=Linnovate-ARM-osd3
 
 # Make sure we have ansible installed and prefer it over curl
