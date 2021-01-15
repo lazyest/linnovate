@@ -171,7 +171,7 @@ ${10}  openshift_node_group_name='node-config-infra'
 
 EOT
 
-echo "ansible books done done" >> /root/status.log
+echo "ansible books done" >> /root/status.log
 
 echo "waiting 5 min for other nodes" >> /root/status.log
 sleep 5m
