@@ -173,13 +173,13 @@ EOT
 
 echo "ansible books done" >> /root/status.log
 
-echo "waiting 5 min for other nodes" >> /root/status.log
-sleep 5m
+echo "waiting 10 min for other nodes" >> /root/status.log
+sleep 10m
 
-ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /root/ansible-deploy.log
+ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/$user/ansible-deploy.log
 echo "ansible (no) prereq done" >> /root/status.log
 
-ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /root/ansible-deploy.log
+ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /home/$user/ansible-deploy.log
 echo "ansible (no) deploy done" >> /root/status.log
 
 echo "calling home" >> /root/status.log
