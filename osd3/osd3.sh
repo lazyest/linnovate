@@ -1,4 +1,7 @@
 #!/bin/bash
+
+user=$2
+
 ssh_rsa="-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAwQHCvNl7YNKTJy2nBsh52RUG5xEex0jzEu/voU92eAyVbAKQ
 jf9UB5M8BxUnv1ajmCbUcfaTdz6K9z43jlP7JG++qdABLH4/qnwNa3ZXFZIfQJja
@@ -29,16 +32,17 @@ x8bswqHNdQF5Jy+Bt4QCfrVFaxnqsZgY2z3Dr7dtFo3aKy5N1zcs
 "
 ssh_rsa_pub="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBAcK82Xtg0pMnLacGyHnZFQbnER7HSPMS7++hT3Z4DJVsApCN/1QHkzwHFSe/VqOYJtRx9pN3Por3PjeOU/skb76p0AEsfj+qfA1rdlcVkh9AmNpVYk2KpSUfN4B5dnHSjRBeHNmuvYTbpid9NHPdt/JM9srlFXk66p9ljg19iAca7uEbAn6y9j46xYUCWzJI6Deai+x/ecpdpH3FiJ6AQhrE1jiOT8bMm9lcpjeaEZbGPGmHQYBt7Z9quSa57JL+NUgURY9PitbsdRxqqvxDbjSdxXzFu9UUOzet7aqcEEyDOADTtj8Ot/v5WpvZchGQSfAt1NCCeuvk6h3ISuhx"
 
+owner_group=`cat /etc/passwd| grep $user | cut -d':' -f5`
+
 mkdir $home/.ssh
 
 echo "$ssh_rsa_pub" > $home/.ssh/authorized_keys
-chown -R $owner $home/.ssh
+chown -R $owner:$owner_group $home/.ssh
 chmod  600 $home/.ssh/*
 
 echo $@ > /root/parameters.log
 
 #common part for all machines
-
 #uncomment beforerelease
 
 echo "system upgrade" > /root/status.log
@@ -73,21 +77,29 @@ search nip.io
 nameserver 8.8.8.8
 EOT
 
+ssh_rsa_pub="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBAcK82Xtg0pMnLacGyHnZFQbnER7HSPMS7++hT3Z4DJVsApCN/1QHkzwHFSe/VqOYJtRx9pN3Por3PjeOU/skb76p0AEsfj+qfA1rdlcVkh9AmNpVYk2KpSUfN4B5dnHSjRBeHNmuvYTbpid9NHPdt/JM9srlFXk66p9ljg19iAca7uEbAn6y9j46xYUCWzJI6Deai+x/ecpdpH3FiJ6AQhrE1jiOT8bMm9lcpjeaEZbGPGmHQYBt7Z9quSa57JL+NUgURY9PitbsdRxqqvxDbjSdxXzFu9UUOzet7aqcEEyDOADTtj8Ot/v5WpvZchGQSfAt1NCCeuvk6h3ISuhx" echo "$ssh_rsa_pub" > $home/.ssh/authorized_keys
+chown -R $owner:$owner_group $home/.ssh
+chmod 600 $home/.ssh/*
+echo "SSH pub done into $home" >> /root/status.log
+
 echo "Case selection begin" >> /root/status.log
 
 
 case $1 in
 
 1)
-
 echo "main node" >> /root/status.log
 
 echo "$ssh_rsa" > $home/.ssh/id_rsa
-chown -R $owner $home/.ssh
+chown -R $owner:$owner_group $home/.ssh
 chmod -R 600 $home/.ssh/*
 
 echo "SSH keys done into $home" >> /root/status.log
 
+ssh_rsa_pub="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBAcK82Xtg0pMnLacGyHnZFQbnER7HSPMS7++hT3Z4DJVsApCN/1QHkzwHFSe/VqOYJtRx9pN3Por3PjeOU/skb76p0AEsfj+qfA1rdlcVkh9AmNpVYk2KpSUfN4B5dnHSjRBeHNmuvYTbpid9NHPdt/JM9srlFXk66p9ljg19iAca7uEbAn6y9j46xYUCWzJI6Deai+x/ecpdpH3FiJ6AQhrE1jiOT8bMm9lcpjeaEZbGPGmHQYBt7Z9quSa57JL+NUgURY9PitbsdRxqqvxDbjSdxXzFu9UUOzet7aqcEEyDOADTtj8Ot/v5WpvZchGQSfAt1NCCeuvk6h3ISuhx" echo "$ssh_rsa_pub" > $home/.ssh/authorized_keys
+chown -R $owner:$owner_group $home/.ssh
+chmod 600 $home/.ssh/*
+echo "SSH pub done into $home" >> /root/status.log
 
 #create hosts records
 hostnamectl set-hostname  master.$4.nip.io
@@ -147,9 +159,9 @@ echo "ansible books done done" >> /root/status.log
 #ansible-playbook -i hosts.ini playbooks/prerequisites.yml
 #ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml
 
-;;
-
 echo "all done" >> /root/status.log
+
+;;
 
 2)
 
@@ -168,7 +180,6 @@ echo "all done" >> /root/status.log
 ;;
 
 *)
-
 echo "unknown case" >/root/status.log
 
 ;;
