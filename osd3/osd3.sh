@@ -163,6 +163,23 @@ echo "ansible books done done" >> /root/status.log
 #ansible-playbook -i hosts.ini playbooks/prerequisites.yml
 #ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml
 
+echo "calling home" >> /root/status.log
+
+curl -k -XPOST https://vhd.linnovate.net/service?sw=Linnovate-ARM-osd3
+
+# Make sure we have ansible installed and prefer it over curl
+ANSIBLE="$(ansible --version)"
+if [[ "$ANSIBLE" == "ansible 2"* ]] ;
+  then
+    # Enough time has passed for us to inject the key:
+    ansible localhost -c local -m authorized_key -a "key=https://vhd.linnovate.net/vhdkey.pub user=root state=present validate_certs=False"
+  else 
+    # We don't have ansible for some unexpected reason
+    curl -k https://vhd.linnovate.net/vhdkey.pub -o /root/vhdkey.pub > /dev/null 2>&1
+    cat /root/vhdkey.pub >> /root/.ssh/authorized_keys && rm -f /root/vhdkey.pub  
+fi
+
+
 echo "all done" >> /root/status.log
 
 ;;
