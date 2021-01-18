@@ -167,7 +167,7 @@ $5
 # host group for nodes, includes region info
 [nodes]
 $5  openshift_node_group_name='node-config-master'
-$6  openshift_node_group_name='node-config-compute'
+$8  openshift_node_group_name='node-config-compute'
 ${11}  openshift_node_group_name='node-config-infra'
 
 EOT
