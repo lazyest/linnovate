@@ -174,8 +174,8 @@ EOT
 
 echo "ansible books done" >> /root/status.log
 
-echo "waiting 1 min for other nodes" >> /root/status.log
-sleep 1m
+echo "waiting 3 min for other nodes" >> /root/status.log
+sleep 3m
 
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/'$user'/ansible-deploy.log'
 echo "ansible prereq done" >> /root/status.log
