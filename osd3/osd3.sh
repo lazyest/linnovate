@@ -90,9 +90,9 @@ sysctl -w net.ipv4.ip_forward=1
 service NetworkManager restart
 service network restart
 
-echo $5 master.$5.nip.io >> /etc/hosts
-echo $8 compute.$8.nip.io >> /etc/hosts
-echo ${11} infra.${11}.nip.io >> /etc/hosts
+echo $4 master.$5.nip.io >> /etc/hosts
+echo $7 compute.$8.nip.io >> /etc/hosts
+echo ${10} infra.${11}.nip.io >> /etc/hosts
 
 
 cat <<EOT >/etc/resolv.conf
@@ -147,7 +147,7 @@ ansible_ssh_user=ubuntu
 # If ansible_ssh_user is not root, ansible_become must be set to true
 ansible_become=true
 openshift_public_hostname=console.$4.nip.io
-openshift_master_default_subdomain=app.$5.nip.io
+openshift_master_default_subdomain=app.$4.nip.io
 deployment_type=origin
 
 [nodes:vars]
@@ -169,7 +169,7 @@ $5
 # host group for nodes, includes region info
 [nodes]
 $5  openshift_node_group_name='node-config-master'
-$8  openshift_node_group_name='node-config-compute'
+$7  openshift_node_group_name='node-config-compute'
 ${11}  openshift_node_group_name='node-config-infra'
 
 EOT
@@ -208,7 +208,7 @@ echo "all done" >> '/home/'$user'/status.log'
 2)
 
 echo "second node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  compute.$8.nip.io
+hostnamectl set-hostname  compute.$7.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
