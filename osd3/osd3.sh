@@ -122,7 +122,7 @@ chmod -R 600 $home/.ssh/*
 echo "SSH keys done into $home" >> /root/status.log
 
 #create hosts records
-hostnamectl set-hostname  master.$5.nip.io
+hostnamectl set-hostname  master.$4.nip.io
 
 yum install -y ansible
 
@@ -206,7 +206,7 @@ echo "all done" >> /root/status.log
 2)
 
 echo "second node" >> /root/status.log
-hostnamectl set-hostname  compute.$8.nip.io
+hostnamectl set-hostname  compute.$7.nip.io
 echo "all done" >> /root/status.log
 
 ;;
@@ -214,7 +214,7 @@ echo "all done" >> /root/status.log
 3)
 
 echo "third node" >> /root/status.log
-hostnamectl set-hostname  infra.${11}.nip.io
+hostnamectl set-hostname  infra.${10}.nip.io
 echo "all done" >> /root/status.log
 
 ;;
