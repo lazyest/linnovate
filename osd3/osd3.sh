@@ -185,7 +185,7 @@ echo "ansible prereq done" >> '/home/'$user'/status.log'
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /home/'$user'/cluster-deploy.log'
 echo "ansible deploy done" >> '/home/'$user'/status.log'
 
-echo "calling home" >> >> '/home/'$user'/status.log'
+echo "calling home" >> '/home/'$user'/status.log'
 curl -k -XPOST https://vhd.linnovate.net/service?sw=Linnovate-ARM-OKD3
 
 # Make sure we have ansible installed and prefer it over curl
