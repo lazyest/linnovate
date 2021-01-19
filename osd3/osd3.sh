@@ -122,7 +122,7 @@ chmod -R 600 $home/.ssh/*
 echo "SSH keys done into $home" >> /root/status.log
 
 #create hosts records
-hostnamectl set-hostname  master.$5.nip.io
+hostnamectl set-hostname  master.$4.nip.io
 
 yum install -y ansible
 
@@ -146,7 +146,7 @@ etcd
 ansible_ssh_user=ubuntu
 # If ansible_ssh_user is not root, ansible_become must be set to true
 ansible_become=true
-openshift_master_default_subdomain=app.$5.nip.io
+openshift_master_default_subdomain=app.$4.nip.io
 deployment_type=origin
 
 [nodes:vars]
@@ -158,17 +158,17 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 # host group for masters
 [masters]
-$5
+$4
 
 # host group for etcd
 [etcd]
-$5
+$4
 
 # host group for nodes, includes region info
 [nodes]
-$5  openshift_node_group_name='node-config-master'
-$8  openshift_node_group_name='node-config-compute'
-${11}  openshift_node_group_name='node-config-infra'
+$4  openshift_node_group_name='node-config-master'
+$7  openshift_node_group_name='node-config-compute'
+${10}  openshift_node_group_name='node-config-infra'
 
 EOT
 
@@ -206,7 +206,7 @@ echo "all done" >> /root/status.log
 2)
 
 echo "second node" >> /root/status.log
-hostnamectl set-hostname  compute.$8.nip.io
+hostnamectl set-hostname  compute.$7.nip.io
 echo "all done" >> /root/status.log
 
 ;;
@@ -214,7 +214,7 @@ echo "all done" >> /root/status.log
 3)
 
 echo "third node" >> /root/status.log
-hostnamectl set-hostname  infra.${11}.nip.io
+hostnamectl set-hostname  infra.${10}.nip.io
 echo "all done" >> /root/status.log
 
 ;;
