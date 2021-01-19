@@ -90,9 +90,9 @@ sysctl -w net.ipv4.ip_forward=1
 service NetworkManager restart
 service network restart
 
-echo $5 master.$5.nip.io >> /etc/hosts
-echo $8 compute.$8.nip.io >> /etc/hosts
-echo ${11} infra.${11}.nip.io >> /etc/hosts
+echo $4 master.$4.nip.io >> /etc/hosts
+echo $7 compute.$7.nip.io >> /etc/hosts
+echo ${10} infra.${10}.nip.io >> /etc/hosts
 
 
 cat <<EOT >/etc/resolv.conf
@@ -146,7 +146,7 @@ etcd
 ansible_ssh_user=ubuntu
 # If ansible_ssh_user is not root, ansible_become must be set to true
 ansible_become=true
-openshift_master_default_subdomain=app.$5.nip.io
+openshift_master_default_subdomain=app.$4.nip.io
 deployment_type=origin
 
 [nodes:vars]
@@ -158,17 +158,17 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 
 # host group for masters
 [masters]
-$5
+$4
 
 # host group for etcd
 [etcd]
-$5
+$4
 
 # host group for nodes, includes region info
 [nodes]
-$5  openshift_node_group_name='node-config-master'
-$8  openshift_node_group_name='node-config-compute'
-${11}  openshift_node_group_name='node-config-infra'
+$4  openshift_node_group_name='node-config-master'
+$7  openshift_node_group_name='node-config-compute'
+${10}  openshift_node_group_name='node-config-infra'
 
 EOT
 
