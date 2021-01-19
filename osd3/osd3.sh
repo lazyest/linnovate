@@ -52,8 +52,37 @@ owner_group=`cat /etc/passwd| grep $user | cut -d':' -f5`
 
 echo $@ > '/home/'$user'/parameters.log'
 
+# preparing network subsystems
+echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
+sed -i 's/PEERDNS=no/PEERDNS=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i 's/NM_CONTROLLED=no/NM_CONTROLLED=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
+
+
+sysctl -w net.ipv4.ip_forward=1
+service NetworkManager restart
+service network restart
+
+echo "/etc/hosts filling" >> '/home/'$user'/status.log'
+
+
+echo $5 master.$4.nip.io >> /etc/hosts
+echo $8 compute.$7.nip.io >> /etc/hosts
+echo ${11} infra.${10}.nip.io >> /etc/hosts
+
+
+cat <<EOT >/etc/resolv.conf
+search nip.io
+nameserver 8.8.8.8
+EOT
+
+mkdir $home/.ssh
+
+echo "$ssh_rsa_pub" >> $home/.ssh/authorized_keys
+chown -R $user:$owner_group $home/.ssh
+chmod 600 $home/.ssh/*
+echo "SSH pub done into $home" >> '/home/'$user'/status.log'
+
 #common part for all machines
-#uncomment beforerelease
 
 echo "system upgrade" >> '/home/'$user'/status.log'
 
@@ -79,33 +108,6 @@ yum -y install origin-clients
 
 systemctl start docker
 systemctl enable docker
-
-# preparing network subsystems
-echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
-sed -i 's/PEERDNS=no/PEERDNS=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
-sed -i 's/NM_CONTROLLED=no/NM_CONTROLLED=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
-
-
-sysctl -w net.ipv4.ip_forward=1
-service NetworkManager restart
-service network restart
-
-echo $5 master.$4.nip.io >> /etc/hosts
-echo $8 compute.$7.nip.io >> /etc/hosts
-echo ${11} infra.${10}.nip.io >> /etc/hosts
-
-
-cat <<EOT >/etc/resolv.conf
-search nip.io
-nameserver 8.8.8.8
-EOT
-
-mkdir $home/.ssh
-
-echo "$ssh_rsa_pub" >> $home/.ssh/authorized_keys
-chown -R $user:$owner_group $home/.ssh
-chmod 600 $home/.ssh/*
-echo "SSH pub done into $home" >> '/home/'$user'/status.log'
 
 echo "Case selection begin" >> '/home/'$user'/status.log'
 
