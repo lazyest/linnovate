@@ -218,7 +218,7 @@ echo "all done" >> '/home/'$user'/status.log'
 3)
 
 echo "third node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  infra.${11}.nip.io
+hostnamectl set-hostname  infra.${10}.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
