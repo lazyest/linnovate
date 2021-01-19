@@ -174,8 +174,8 @@ EOT
 
 echo "ansible books done" >> /home/'$user'/status.log
 
-echo "waiting 3 min for other nodes" >> /home/'$user'/status.log
-sleep 3m
+echo "waiting 5 min for other nodes" >> /home/'$user'/status.log
+sleep 5m
 
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/'$user'/ansible-deploy.log'
 echo "ansible prereq done" >> /home/'$user'/status.log
@@ -184,7 +184,7 @@ sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i
 echo "ansible deploy done" >> /home/'$user'/status.log
 
 echo "calling home" >> /home/'$user'/status.log
-curl -k -XPOST https://vhd.linnovate.net/service?sw=Linnovate-ARM-osd3
+curl -k -XPOST https://vhd.linnovate.net/service?sw=Linnovate-ARM-OKD3
 
 # Make sure we have ansible installed and prefer it over curl
 ANSIBLE="$(ansible --version)"
