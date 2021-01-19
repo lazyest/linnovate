@@ -90,9 +90,9 @@ sysctl -w net.ipv4.ip_forward=1
 service NetworkManager restart
 service network restart
 
-echo $4 master.$5.nip.io >> /etc/hosts
-echo $7 compute.$8.nip.io >> /etc/hosts
-echo ${10} infra.${11}.nip.io >> /etc/hosts
+echo $5 master.$4.nip.io >> /etc/hosts
+echo $7 compute.$6.nip.io >> /etc/hosts
+echo ${11} infra.${10}.nip.io >> /etc/hosts
 
 
 cat <<EOT >/etc/resolv.conf
@@ -208,7 +208,7 @@ echo "all done" >> '/home/'$user'/status.log'
 2)
 
 echo "second node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  compute.$7.nip.io
+hostnamectl set-hostname  compute.$6.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
@@ -216,7 +216,7 @@ echo "all done" >> '/home/'$user'/status.log'
 3)
 
 echo "third node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  infra.${11}.nip.io
+hostnamectl set-hostname  infra.${10}.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
