@@ -46,25 +46,25 @@ jo82S09HDdmw0AAAAMbGF6eUBsYXp5ZXN0AQIDBAUGBw==
 "
 ssh_rsa_pub="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIHrKAWjxHFfccDBzpiu90N70bnoTkrBWwMeJ8REzIqbODS+NV8gUyvZq7Jh0iVhWgHA8PjDpCPV3aZYdiQcFwsNNjsG/7CWZqkU9hl8bEOALray/pFdbAn5ERhfg3n9GDAutxYKRZtsk+zZQ5oRk+ddyUrykWKGpA1y6Om9PLSw9j8G241cs9yZAaA0/RAjUrO0T38NTVQs6pxd9maL3DMWlv/S4wL4D5SYt8MVE6+3GZMP3nuI2frv9x1hqY4SorN9mUfYGVJEF79p2qNW4+nu5JXjKwfpbmnRTLMDsBIvWzFORJLuwg4AtgqAWrfCufwHdrvAeDVUMcwZLPh8pzk2oN5j5K27H0OcnkQp/Yd5wxX1fBhlbJ0LF9Tp2orgrCFHvCDxhTHGUaZuV7lLfsT5/ROeo65h4FmrG5VYEWM9R+pWeLtosypNOUx5eR0TmRvYxnwEb9HlewSlvk7Y536fvZz/z36h3P3U+prttZ10Xby+kzTfOgDcDuaojUGZE= lazy@lazyest"
 
-echo "adding pub key info" > /home/'$user'/status.log
+echo "adding pub key info" > '/home/'$user'/status.log'
 
 owner_group=`cat /etc/passwd| grep $user | cut -d':' -f5`
 
-echo $@ > /home/'$user'/parameters.log
+echo $@ > '/home/'$user'/parameters.log'
 
 #common part for all machines
 #uncomment beforerelease
 
-echo "system upgrade" >> /home/'$user'/status.log
+echo "system upgrade" >> '/home/'$user'/status.log'
 
 yum -y update --exclude=WALinuxAgent
 
-echo "misc install" >> /home/'$user'/status.log
+echo "misc install" >> '/home/'$user'/status.log'
 
 yum install -y wget git zile net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct openssl-devel httpd-tools python-cryptography python2-pip python-devel python-passlib java-1.8.0-openjdk-headless "@Development Tools"
 
 
-echo "docker install" >> /home/'$user'/status.log
+echo "docker install" >> '/home/'$user'/status.log'
 
 yum install -y docker-1.13.1
 systemctl start docker && systemctl enable docker && systemctl status docker
@@ -72,7 +72,7 @@ systemctl start docker && systemctl enable docker && systemctl status docker
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
-echo "openshift install" >> /home/'$user'/status.log
+echo "openshift install" >> '/home/'$user'/status.log'
 
 yum -y install centos-release-openshift-origin311 epel-release git pyOpenSSL
 yum -y install origin-clients
@@ -105,21 +105,21 @@ mkdir $home/.ssh
 echo "$ssh_rsa_pub" >> $home/.ssh/authorized_keys
 chown -R $user:$owner_group $home/.ssh
 chmod 600 $home/.ssh/*
-echo "SSH pub done into $home" >> /home/'$user'/status.log
+echo "SSH pub done into $home" >> '/home/'$user'/status.log'
 
-echo "Case selection begin" >> /home/'$user'/status.log
+echo "Case selection begin" >> '/home/'$user'/status.log'
 
 
 case $1 in
 
 1)
-echo "main node" >> /home/'$user'/status.log
+echo "main node" >> '/home/'$user'/status.log'
 
 echo "$ssh_rsa" >> $home/.ssh/id_rsa
 chown -R $user:$owner_group $home/.ssh
 chmod -R 600 $home/.ssh/*
 
-echo "SSH keys done into $home" >> /home/'$user'/status.log
+echo "SSH keys done into $home" >> '/home/'$user'/status.log'
 
 #create hosts records
 hostnamectl set-hostname  master.$5.nip.io
@@ -130,7 +130,7 @@ cd $home
 git clone https://github.com/openshift/openshift-ansible.git
 cd openshift-ansible && git fetch && git checkout release-3.11
 
-echo "Git done" >> /home/'$user'/status.log
+echo "Git done" >> '/home/'$user'/status.log'
 
 cat <<EOT >hosts.ini
 
@@ -174,18 +174,18 @@ ${11}  openshift_node_group_name='node-config-infra'
 
 EOT
 
-echo "ansible books done" >> /home/'$user'/status.log
+echo "ansible books done" >> '/home/'$user'/status.log'
 
-echo "waiting 5 min for other nodes" >> /home/'$user'/status.log
+echo "waiting 5 min for other nodes">> '/home/'$user'/status.log'
 sleep 5m
 
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/'$user'/ansible-deploy.log'
-echo "ansible prereq done" >> /home/'$user'/status.log
+echo "ansible prereq done" >> '/home/'$user'/status.log'
 
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /home/'$user'/ansible-deploy.log'
-echo "ansible deploy done" >> /home/'$user'/status.log
+echo "ansible deploy done" >> '/home/'$user'/status.log'
 
-echo "calling home" >> /home/'$user'/status.log
+echo "calling home" >> >> '/home/'$user'/status.log'
 curl -k -XPOST https://vhd.linnovate.net/service?sw=Linnovate-ARM-OKD3
 
 # Make sure we have ansible installed and prefer it over curl
@@ -201,28 +201,28 @@ if [[ "$ANSIBLE" == "ansible 2"* ]] ;
 fi
 
 
-echo "all done" >> /home/'$user'/status.log
+echo "all done" >> '/home/'$user'/status.log'
 
 ;;
 
 2)
 
-echo "second node" >> /home/'$user'/status.log
+echo "second node" >> '/home/'$user'/status.log'
 hostnamectl set-hostname  compute.$8.nip.io
-echo "all done" >> /home/'$user'/status.log
+echo "all done" >> '/home/'$user'/status.log'
 
 ;;
 
 3)
 
-echo "third node" >> /home/'$user'/status.log
+echo "third node" >> '/home/'$user'/status.log'
 hostnamectl set-hostname  infra.${11}.nip.io
-echo "all done" >> /home/'$user'/status.log
+echo "all done" >> '/home/'$user'/status.log'
 
 ;;
 
 *)
-echo "unknown case" >> /home/'$user'/status.log
+echo "unknown case" >> '/home/'$user'/status.log'
 
 ;;
 
