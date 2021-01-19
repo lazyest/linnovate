@@ -91,7 +91,7 @@ service NetworkManager restart
 service network restart
 
 echo $5 master.$4.nip.io >> /etc/hosts
-echo $7 compute.$6.nip.io >> /etc/hosts
+echo $8 compute.$7.nip.io >> /etc/hosts
 echo ${11} infra.${10}.nip.io >> /etc/hosts
 
 
@@ -122,7 +122,7 @@ chmod -R 600 $home/.ssh/*
 echo "SSH keys done into $home" >> '/home/'$user'/status.log'
 
 #create hosts records
-hostnamectl set-hostname  master.$5.nip.io
+hostnamectl set-hostname  master.$4.nip.io
 
 yum install -y ansible
 
@@ -169,7 +169,7 @@ $5
 # host group for nodes, includes region info
 [nodes]
 $5  openshift_node_group_name='node-config-master'
-$7  openshift_node_group_name='node-config-compute'
+$8  openshift_node_group_name='node-config-compute'
 ${11}  openshift_node_group_name='node-config-infra'
 
 EOT
@@ -208,7 +208,7 @@ echo "all done" >> '/home/'$user'/status.log'
 2)
 
 echo "second node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  compute.$6.nip.io
+hostnamectl set-hostname  compute.$7.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
@@ -216,7 +216,7 @@ echo "all done" >> '/home/'$user'/status.log'
 3)
 
 echo "third node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  infra.${10}.nip.io
+hostnamectl set-hostname  infra.${11}.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
