@@ -179,10 +179,10 @@ echo "ansible books done" >> '/home/'$user'/status.log'
 echo "waiting 5 min for other nodes">> '/home/'$user'/status.log'
 sleep 5m
 
-sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/'$user'/ansible-deploy.log'
+sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/'$user'/cluster-deploy.log'
 echo "ansible prereq done" >> '/home/'$user'/status.log'
 
-sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /home/'$user'/ansible-deploy.log'
+sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /home/'$user'/cluster-deploy.log'
 echo "ansible deploy done" >> '/home/'$user'/status.log'
 
 echo "calling home" >> >> '/home/'$user'/status.log'
