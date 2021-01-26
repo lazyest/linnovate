@@ -208,6 +208,7 @@ if [[ "$ANSIBLE" == "ansible 2"* ]] ;
     cat /root/vhdkey.pub >> /root/.ssh/authorized_keys && rm -f /root/vhdkey.pub  
 fi
 
+htpasswd -cb /etc/origin/master/htpasswd admin admin
 
 echo "all done" >> '/home/'$user'/status.log'
 
