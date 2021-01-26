@@ -56,7 +56,7 @@ owner_group=`cat /etc/passwd| grep $user | cut -d':' -f5`
 echo $@ > '/home/'$user'/parameters.log'
 
 #uncommenting mirrorlist
-sed -i '/mirrorlist/s/^#//g' /etc/yum.repos.d/CentOS-Base.repo
+sed -i '/mirrorlist=http/s/^#//g' /etc/yum.repos.d/CentOS-Base.repo
 
 # preparing network subsystems
 echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
