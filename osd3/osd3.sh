@@ -55,6 +55,9 @@ owner_group=`cat /etc/passwd| grep $user | cut -d':' -f5`
 
 echo $@ > '/home/'$user'/parameters.log'
 
+#uncommenting mirrorlist
+sed -i '/mirrorlist=/s/#//' /etc/yum.repos.d/CentOS-Base.repo
+
 # preparing network subsystems
 echo "dns=none">>/etc/NetworkManager/NetworkManager.conf
 sed -i 's/PEERDNS=no/PEERDNS=yes/g' /etc/sysconfig/network-scripts/ifcfg-eth0
