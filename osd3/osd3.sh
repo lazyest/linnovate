@@ -4,6 +4,9 @@ user=$2
 home=$(grep "^$user:" /etc/passwd | awk -F: '{print $6}')
 owner=$(grep "^$user:" /etc/passwd | grep "^$user:" /etc/passwd | awk -F: '{print $3,":",$4}' | sed 's/ //g')
 
+echo -e "\n$user ALL=(ALL) NOPASSWD: ALL\n" | sudo tee -a /etc/sudoers
+usermod -aG wheel $user
+
 
 ssh_rsa="-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
