@@ -307,6 +307,9 @@ echo "all done" >> '/home/'$user'/status.log'
 
 *)
 echo "unknown case" >> '/home/'$user'/status.log'
+echo "" >> /etc/motd
+echo "This is unsupported node of OKD, out-of-cluster" >> /etc/motd
+echo "web-console should be available on https://console.$4.nip.io:8443" >> /etc/motd
 
 ;;
 
