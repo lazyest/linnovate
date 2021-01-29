@@ -31,6 +31,16 @@ echo "" >> /etc/motd
 echo "" >> /etc/motd
 echo "##########################################################################################################################################" >> /etc/motd
 
+copy /etc/motd /etc/motd.clean
+
+echo "" >> /etc/motd
+echo "" >> /etc/motd
+echo "OKD3 cluster is under deployment" >> /etc/motd
+echo "You may follow debugging messages in deploy.log" >> /etc/motd
+echo "After there will be more info in cluster-deploy.log" >> /etc/motd
+echo "" >> /etc/motd
+echo "After finished deployment system message will follow" >> /etc/motd
+
 
 user=$2
 home=$(grep "^$user:" /etc/passwd | awk -F: '{print $6}')
@@ -139,7 +149,7 @@ systemctl start docker && systemctl enable docker && systemctl status docker
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
-echo "openshift install" >> '/home/'$user'/status.log'
+echo "openshift binaries install" >> '/home/'$user'/status.log'
 
 yum -y install centos-release-openshift-origin311 epel-release git pyOpenSSL
 yum -y install origin-clients
@@ -166,6 +176,7 @@ hostnamectl set-hostname  master.$4.nip.io
 
 yum install -y ansible
 
+echo "cloning ansible playbooks" >> '/home/'$user'/status.log'
 cd $home
 git clone https://github.com/openshift/openshift-ansible.git
 cd openshift-ansible && git fetch && git checkout release-3.11
@@ -183,7 +194,7 @@ etcd
 # Set variables common for all OSEv3 hosts
 [OSEv3:vars]
 # SSH user, this user should allow ssh based auth without requiring a password
-ansible_ssh_user=ubuntu
+ansible_ssh_user=$user
 # If ansible_ssh_user is not root, ansible_become must be set to true
 ansible_become=true
 openshift_public_hostname=console.$4.nip.io
@@ -219,9 +230,12 @@ echo "ansible books done" >> '/home/'$user'/status.log'
 echo "waiting 5 min for other nodes">> '/home/'$user'/status.log'
 sleep 5m
 
+echo "ansible pre-req run" >> '/home/'$user'/status.log'
+
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/prerequisites.yml > /home/'$user'/cluster-deploy.log'
 echo "ansible prereq done" >> '/home/'$user'/status.log'
 
+echo "ansible deploy run" >> '/home/'$user'/status.log'
 sudo -u $user bash -c 'cd /home/'$user'/openshift-ansible && ansible-playbook -i hosts.ini playbooks/deploy_cluster.yml >> /home/'$user'/cluster-deploy.log'
 echo "ansible deploy done" >> '/home/'$user'/status.log'
 
@@ -240,9 +254,26 @@ if [[ "$ANSIBLE" == "ansible 2"* ]] ;
     cat /root/vhdkey.pub >> /root/.ssh/authorized_keys && rm -f /root/vhdkey.pub  
 fi
 
-htpasswd -cb /etc/origin/master/htpasswd admin admin
+echo "Setting admin password" >> '/home/'$user'/status.log'
+
+PASS=admin
+
+htpasswd -cb /etc/origin/master/htpasswd admin $PASS
 
 echo "all done" >> '/home/'$user'/status.log'
+wall "OKD cluster up"
+wall "web-console should be available on https://console.$4.nip.io:8443"
+wall "Console login is admin, pass $PASS"
+wall "To login as administrator: oc login -u system:admin"
+
+copy /etc/motd.clean /etc/motd
+
+echo "" >> /etc/motd
+echo "web-console should be available on https://console.$4.nip.io:8443" >> /etc/motd 
+echo "Console login is admin, pass $PASS" >> /etc/motd
+echo "To login as administrator: oc login -u system:admin" >> /etc/motd
+
+#cluster startup service create and enable TODO
 
 ;;
 
@@ -252,9 +283,21 @@ echo "second node" >> '/home/'$user'/status.log'
 hostnamectl set-hostname  compute.$7.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
+echo "" >> /etc/motd
+echo "This is non-control node of OKD" >> /etc/motd
+echo "web-console should be available on https://console.$4.nip.io:8443" >> /etc/motd 
+echo "Console login is admin, pass $PASS" >> /etc/motd
+echo "To login as administrator: oc login -u system:admin" >> /etc/motd
+
 ;;
 
 3)
+
+echo "" >> /etc/motd
+echo "This is non-control node of OKD" >> /etc/motd
+echo "web-console should be available on https://console.$4.nip.io:8443" >> /etc/motd 
+echo "Console login is admin, pass $PASS" >> /etc/motd
+echo "To login as administrator: oc login -u system:admin" >> /etc/motd
 
 echo "third node" >> '/home/'$user'/status.log'
 hostnamectl set-hostname  infra.${10}.nip.io
