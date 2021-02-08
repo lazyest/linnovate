@@ -204,7 +204,13 @@ openshift_public_hostname=console.$4.nip.io
 openshift_master_default_subdomain=app.$4.nip.io
 deployment_type=origin
 
+openshift_docker_insecure_registries=172.30.0.0/16
+
+# Configure dnsIP in the node config
+openshift_dns_ip=172.30.0.1
+
 [nodes:vars]
+
 
 openshift_disable_check=disk_availability,memory_availability,docker_storage
 [masters:vars]
