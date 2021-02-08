@@ -39,7 +39,7 @@ copy /etc/motd /etc/motd.clean
 echo "" >> /etc/motd
 echo "" >> /etc/motd
 echo "OKD3 cluster is under deployment" >> /etc/motd
-echo "You may follow debugging messages in deploy.log" >> /etc/motd
+echo "You may follow debugging messages in status.log" >> /etc/motd
 echo "After there will be more info in cluster-deploy.log" >> /etc/motd
 echo "" >> /etc/motd
 echo "After finished deployment system message will follow" >> /etc/motd
