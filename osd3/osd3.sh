@@ -121,10 +121,10 @@ echo $8 compute.$7.nip.io >> /etc/hosts
 echo ${11} infra.${10}.nip.io >> /etc/hosts
 
 
-#cat <<EOT >/etc/resolv.conf
+cat <<EOT >/etc/resolv.conf
 #search nip.io
-#nameserver 8.8.8.8
-#EOT
+nameserver 8.8.8.8
+EOT
 
 mkdir $home/.ssh
 
