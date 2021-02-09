@@ -175,7 +175,7 @@ chmod -R 600 $home/.ssh/*
 echo "SSH keys done into $home" >> '/home/'$user'/status.log'
 
 #create hosts records
-hostnamectl set-hostname  master.$4.nip.io
+hostnamectl set-hostname  master ##.$4.nip.io
 
 yum install -y ansible
 
@@ -237,7 +237,7 @@ EOT
 echo "ansible books done" >> '/home/'$user'/status.log'
 
 echo "waiting 5 min for other nodes">> '/home/'$user'/status.log'
-sleep 5m
+sleep 3m
 
 echo "ansible pre-req run" >> '/home/'$user'/status.log'
 
@@ -289,7 +289,7 @@ echo "To login as administrator: oc login -u system:admin" >> /etc/motd
 2)
 
 echo "second node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  compute.$7.nip.io
+hostnamectl set-hostname  compute #.$7.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 echo "" >> /etc/motd
@@ -309,7 +309,7 @@ echo "Console login is admin, pass $PASS" >> /etc/motd
 echo "To login as administrator: oc login -u system:admin" >> /etc/motd
 
 echo "third node" >> '/home/'$user'/status.log'
-hostnamectl set-hostname  infra.${10}.nip.io
+hostnamectl set-hostname  infra #.${10}.nip.io
 echo "all done" >> '/home/'$user'/status.log'
 
 ;;
