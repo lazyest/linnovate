@@ -116,9 +116,9 @@ service network restart
 echo "/etc/hosts filling" >> '/home/'$user'/status.log'
 
 
-echo $5 master.$4.nip.io >> /etc/hosts
-echo $8 compute.$7.nip.io >> /etc/hosts
-echo ${11} infra.${10}.nip.io >> /etc/hosts
+echo $4 master.$4.nip.io >> /etc/hosts
+echo $7 compute.$7.nip.io >> /etc/hosts
+echo ${10} infra.${10}.nip.io >> /etc/hosts
 
 
 cat <<EOT >/etc/resolv.conf
